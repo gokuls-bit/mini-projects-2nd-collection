@@ -1,21 +1,33 @@
-import "../css/MovieCard.css";
-function MovieCard({ movie }) {
-  function onFavoriteClick() {
-    alert(`You favorited: ${movie.title}`);
-  }
+import React from 'react';
+import { useMovieContext } from '../context/MovieContext';
 
-  return (
-    <div className="card h-100 shadow-sm">
-      <img src={movie.url} className="card-img-top" alt={movie.title} />
-      <div className="card-body text-center">
-        <h5 className="card-title">{movie.title}</h5>
-        <p className="card-text text-muted">{movie.release_date}</p>
-        <button className="btn btn-outline-danger btn-sm" onClick={onFavoriteClick}>
-          ❤️ Favorite
-        </button>
-      </div>
-    </div>
-  );
-}
+const MovieCard = ({ movie }) => {
+    const { addToFavorites, removeFromFavorites, isFavorite, theme } = useMovieContext();
+    const favorite = isFavorite(movie.id);
+
+    const handleFavoriteClick = () => {
+        if (favorite) {
+            removeFromFavorites(movie.id);
+        } else {
+            addToFavorites(movie);
+        }
+    };
+
+    return (
+        <div className={`movie-card ${theme}`}>
+            <div className="movie-poster">
+                <img src={movie.url} alt={movie.title} />
+                <div className="movie-overlay">
+                    <button className="favorite-button" onClick={handleFavoriteClick}>
+                        {favorite ? '❤️' : '🤍'}
+                    </button>
+                </div>
+            </div>
+            <div className="movie-info">
+                <h4>{movie.title}</h4>
+            </div>
+        </div>
+    );
+};
 
 export default MovieCard;

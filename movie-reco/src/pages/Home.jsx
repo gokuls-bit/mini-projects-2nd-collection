@@ -1,106 +1,87 @@
+// src/pages/Home.js
+
 import MovieCard from '../components/MovieCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import "../css/Home.css";
+import { searchMovies, getPopularMovies } from "../services/api";
+import { useMovieContext } from '../context/MovieContext';
 
 function Home() {
-    const [searchQuery, setSearchQuery] = useState('');
-  const movies = [
-    {
-      id: 1,
-      title: "The Avengers",
-      release_date: "2012-04-25",
-      url: "https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg"
-    },
-    {
-      id: 2,
-      title: "Avengers: Age of Ultron",
-      release_date: "2015-04-22",
-      url: "https://image.tmdb.org/t/p/w500/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg"
-    },
-    {
-      id: 3,
-      title: "Avengers: Infinity War",
-      release_date: "2018-04-25",
-      url: "https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg"
-    },
-    {
-      id: 4,
-      title: "Avengers: Endgame",
-      release_date: "2019-04-24",
-      url: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
-    },
-    {
-      id: 5,
-      title: "Iron Man",
-      release_date: "2008-04-30",
-      url: "https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg"
-    },
-    {
-      id: 6,
-      title: "Iron Man 2",
-      release_date: "2010-04-28",
-      url: "https://image.tmdb.org/t/p/w500/6WBeq4fCfn7AN0o21W9qNcRF2l9.jpg"
-    },
-    {
-      id: 7,
-      title: "Iron Man 3",
-      release_date: "2013-04-18",
-      url: "https://image.tmdb.org/t/p/w500/1Ilv6ryHUv6rt9zIsbSEJUmmbEi.jpg"
-    },
-    {
-      id: 8,
-      title: "Captain America: The First Avenger",
-      release_date: "2011-07-22",
-      url: "https://image.tmdb.org/t/p/w500/vSNxAJTlD0r02V9sPYpOjqDZXUK.jpg"
-    },
-    {
-      id: 9,
-      title: "Captain America: The Winter Soldier",
-      release_date: "2014-03-20",
-      url: "https://image.tmdb.org/t/p/w500/tVFRpFw3xTedgPGqxW0AOI8Qhh0.jpg"
-    },
-    {
-      id: 10,
-      title: "Captain America: Civil War",
-      release_date: "2016-04-27",
-      url: "https://image.tmdb.org/t/p/w500/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg"
-    },
-    {
-      id: 11,
-      title: "Thor",
-      release_date: "2011-04-21",
-      url: "https://image.tmdb.org/t/p/w500/prSfAi1xGrhLQNxVSUFh61xQ4Qy.jpg"
-    },
-    {
-      id: 12,
-      title: "Thor: Ragnarok",
-      release_date: "2017-10-25",
-      url: "https://image.tmdb.org/t/p/w500/rv1AWImgx386ULjcf62VYaW8zSt.jpg"
+  const { theme, toggleTheme } = useMovieContext(); // Access theme context
+  const [searchQuery, setSearchQuery] = useState('');
+  const [movies, setMovies] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadPopularMovies = async () => {
+      try {
+        const popularMovies = await getPopularMovies();
+        setMovies(popularMovies);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load movies...");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPopularMovies();
+  }, []);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim() || loading) return;
+    setLoading(true);
+    try {
+      const results = await searchMovies(searchQuery);
+      setMovies(results);
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Search failed...");
+    } finally {
+      setLoading(false);
     }
-  ];
-const handleSearch = ()=> {
-    e.preventDefault()
-    alert(searchQuery)
-    setSearchQuery("------")
-}
+  };
+
   return (
-    <div className="Home">
-        <form onSubmit={handleSearch} className="search-form">
-            <input type="text"
-             placeholder="Search for a movie..."
-              className="search-input" 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="search-button">Search</button>
+    <div className={`Home container py-4 ${theme}`}>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <form onSubmit={handleSearch} className="search-form d-flex flex-grow-1 me-3">
+          <input
+            type="text"
+            placeholder="Search for a movie..."
+            className="form-control me-2 search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" className="btn btn-danger search-button">Search</button>
         </form>
-      <div className="container py-4">
-        <h1 className="text-center text-danger mb-4">🔥 Top 12 Avengers Movies</h1>
-        <div className="row">
-          {movies.map((movie) => (
-             movie.title.toLowerCase().startsWith(searchQuery.toLowerCase()) && (<MovieCard movie={movie} key={movie.id} />)
-          ))}
-        </div>
+        <button className="btn btn-outline-secondary" onClick={toggleTheme}>
+          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
       </div>
+
+      {error && <div className="alert alert-danger">{error}</div>}
+
+      {loading ? (
+        <div className="text-center text-muted">Loading...</div>
+      ) : (
+        <>
+          <h1 className="text-center text-danger mb-4">🔥 Top Movies</h1>
+          <div className="row g-4">
+            {movies.length > 0 ? (
+              movies.map((movie) => (
+                <div className="col-md-3" key={movie.id}>
+                  <MovieCard movie={movie} />
+                </div>
+              ))
+            ) : (
+              <div className="text-center">No movies found.</div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -1,0 +1,37 @@
+.movie-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.movie-button {
+  background-color: #e50914; /* Netflix Red */
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.movie-button:hover {
+  background-color: #b20710;
+  transform: scale(1.05);
+}
+
+.movie-button:active {
+  background-color: #7f0000;
+}
+
+@media (max-width: 600px) {
+  .movie-button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}

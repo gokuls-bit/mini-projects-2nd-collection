@@ -1,47 +1,56 @@
+/* navbar.css */
 .navbar {
-  background-color: #000000;
-  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 1.5rem;
+  background-color: #0d0d0d;
+  color: white;
 }
 
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
+.navbar a {
+  color: white;
+  margin-left: 1.25rem;
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
-.navbar-links {
+.navbar a:hover {
+  color: #e50914;
+  text-decoration: underline;
+}
+
+.navbar .nav-right {
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  gap: 1rem;
 }
 
-.nav-link {
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
+.theme-toggle-btn {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  background: none;
+  border: 1px solid #666;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  color: white;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
-.nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.theme-toggle-btn:hover {
+  background-color: #222;
+  border-color: #999;
 }
 
-@media (max-width: 768px) {
+/* Optional: Responsive shrink */
+@media (max-width: 576px) {
   .navbar {
-    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .navbar-brand {
-    font-size: 1.2rem;
-  }
-
-  .navbar-links {
-    gap: 1rem;
-  }
-
-  .nav-link {
-    padding: 0.5rem;
+  .navbar .nav-right {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 0.5rem;
   }
 }
