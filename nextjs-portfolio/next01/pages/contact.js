@@ -9,7 +9,7 @@ export default function Contact() {
         <a href="https://github.com/gokuls-bit" target="_blank" className="hover:underline">GitHub</a>
         <a href="https://linkedin.com/in/gokul-kumar-sant" target="_blank" className="hover:underline">LinkedIn</a>
         <a href="https://instagram.com/gokulsantt" target="_blank" className="hover:underline">Instagram</a>
-      </div>
+      </div> 
     </section>
   );
 }
