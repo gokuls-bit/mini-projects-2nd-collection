@@ -15,7 +15,7 @@ interface ProjectCardProps {
     image: string;
     tags: string[];
     github: string;
-    live: string;
+    live: string; 
   };
 }
 
