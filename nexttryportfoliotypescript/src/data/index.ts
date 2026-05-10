@@ -8,7 +8,7 @@ export const personalInfo = {
   name: 'Gokul Kumar Sant',
   title: 'Designer & Software Engineer',
   about: "I'm a passionate Software Engineer with a keen eye for design, specializing in creating intuitive and visually appealing w eb experiences. My expertise spans front-end development, focusing on React, Next.js, and modern CSS frameworks like Tailwind CSS, bringing ideas to life with clean code and smooth animations. I love transforming complex problems into elegant solutions.",
-  profileImage: '/images/gokulkumarsant.png', // Corrected profile image path
+  profileImage: '/images/gokulkumarsant.png', // Corrected profile image path 
   resumePath: '/resume.gokulsant.pdf', // Corrected resume path (assuming it's a PDF)
   contactEmail: 'gokulsant684@gmail.com',
   contactNumber: '+91-9518193235', // Assuming you still want this number
